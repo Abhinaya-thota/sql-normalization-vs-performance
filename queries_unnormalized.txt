@@ -1,0 +1,39 @@
+SELECT PersonName 
+       FROM salary_tracker_table
+       WHERE BirthDate < '1975-01-01' 
+       AND Earnings > 130000 
+       AND EarningsYear = (SELECT MAX(EarningsYear) FROM salary_tracker_table);
+
+SELECT PersonName, SchoolName 
+       FROM salary_tracker_table 
+       WHERE Earnings > 400000
+       AND StillWorking = 'no';
+
+SELECT DISTINCT PersonName
+       FROM salary_tracker_table
+       WHERE SchoolName = 'University of Texas'
+       AND Jobtitle = 'Lecturer' 
+       AND StillWorking = 'no';
+
+SELECT SchoolName, SchoolCampus, COUNT(*) AS ActiveFacultyCount
+       FROM salary_tracker_table
+       WHERE StillWorking = 'yes'
+       GROUP BY SchoolName, SchoolCampus
+       ORDER BY ActiveFacultyCount DESC
+       LIMIT 1;
+
+SELECT PersonName, JobTitle, DepartmentName, SchoolName, Earnings
+       FROM salary_tracker_table AS outer_table
+       WHERE PersonName = 'Abhinaya Thota' 
+       AND EarningsYear = (
+                   SELECT MAX(EarningsYear)
+                   FROM salary_tracker_table AS inner_table
+                   WHERE inner_table.PersonID = outer_table.PersonID);
+
+SELECT DepartmentName, AVG(Earnings) AS AverageEarnings
+       FROM salary_tracker_table
+       GROUP BY DepartmentName
+       ORDER BY AverageEarnings DESC
+       LIMIT 1;
+       
+

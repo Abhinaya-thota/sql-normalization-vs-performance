@@ -1,0 +1,50 @@
+SELECT DISTINCT p.PersonName
+FROM persons p, employment_records e
+WHERE p.PersonID = e.PersonID
+AND p.BirthDate < '1975-01-01'
+AND e.Earnings > 130000
+AND e.EarningsYear = (
+    SELECT MAX(EarningsYear)
+    FROM employment_records e2);
+
+SELECT DISTINCT p.PersonName, s.SchoolName
+FROM persons p, employment_records e, schools s 
+WHERE p.PersonID = e.PersonID
+AND e.SchoolID = s.SchoolID
+AND e.Earnings > 400000
+AND e.StillWorking = 'no';
+
+SELECT DISTINCT p.PersonName
+FROM persons p, employment_records e, schools s  
+WHERE e.SchoolID = s.SchoolID
+AND p.PersonID = e.PersonID
+AND s.SchoolName = 'University of Texas'
+AND e.JobTitle = 'Lecturer'
+AND e.StillWorking = 'no';
+
+SELECT s.SchoolName, e.SchoolCampus, COUNT(*) as ActiveFacultyCount
+FROM schools s, employment_records e  
+WHERE s.SchoolID = e.SchoolID
+AND e.StillWorking = 'yes'
+GROUP BY s.SchoolID, s.SchoolName, e.SchoolCampus
+ORDER BY ActiveFacultyCount DESC
+LIMIT 1;
+
+SELECT p.PersonName, e.JobTitle, d.DepartmentName, s.SchoolName, e.Earnings
+FROM persons p, employment_records e, department d, schools s  
+WHERE e.SchoolID = s.SchoolID
+AND e.DepartmentID = d.DepartmentID
+AND p.PersonID = e.PersonID
+AND p.PersonName = 'Abhinaya Thota'
+AND e.EarningsYear = (
+    SELECT MAX(EarningsYear)
+    FROM employment_records
+    WHERE PersonID = p.PersonID
+);
+
+SELECT d.DepartmentName, AVG(e.Earnings) as AvgEarnings
+FROM department d, employment_records e 
+WHERE d.DepartmentID = e.DepartmentID
+GROUP BY d.DepartmentID, d.DepartmentName
+ORDER BY AvgEarnings DESC
+LIMIT 1;
