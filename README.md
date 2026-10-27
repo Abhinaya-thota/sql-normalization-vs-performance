@@ -43,7 +43,7 @@ A 100x increase in data volume caused simple filter queries to slow ~57–80x (r
 ├── requirements.txt
 ├── data/
 │   └── salary_tracker_1MB.csv          # Sample dataset (1MB) — included so the scripts run out of the box
-└── results/
+└── Results/
     ├── query_execution_times_normalized.png
     ├── query_execution_times_unnormalized.png
     └── query_results_normalized.txt              # Full query output + timing, normalized schema
